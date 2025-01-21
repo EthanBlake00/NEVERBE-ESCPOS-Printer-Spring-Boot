@@ -3,6 +3,7 @@ package lk.neverbe.printserver.neverposprintserver.services;
 import com.github.anastaciocintra.escpos.EscPos;
 import com.github.anastaciocintra.escpos.EscPosConst;
 import com.github.anastaciocintra.escpos.Style;
+import com.github.anastaciocintra.escpos.barcode.BarCode;
 import com.github.anastaciocintra.output.PrinterOutputStream;
 import lk.neverbe.printserver.neverposprintserver.dto.OrderDTO;
 import lk.neverbe.printserver.neverposprintserver.dto.OrderItemDTO;
@@ -30,7 +31,6 @@ public class PrintServiceImpl implements PrintService {
         Style headerStyle = new Style().setBold(true).setFontSize(Style.FontSize._1, Style.FontSize._1).setJustification(Style.Justification.Center);
         Style defaultStyle = new Style().setFontSize(Style.FontSize._1, Style.FontSize._1).setJustification(Style.Justification.Left_Default);
         Style rightAlignStyle = new Style().setFontSize(Style.FontSize._1, Style.FontSize._1).setJustification(Style.Justification.Right);
-
         try {
             escPos.pulsePin(EscPos.PinConnector.Pin_2, 100, 100);
             escPos.feed(2);
@@ -87,6 +87,18 @@ public class PrintServiceImpl implements PrintService {
             } else if (today.getMonthValue() == 2 && today.getDayOfMonth() == 14) {
                 escPos.write(headerStyle.setJustification(EscPosConst.Justification.Center), "Happy Valentine's Day!\n");
             }
+
+            escPos.feed(1);
+
+            // Barcode
+            BarCode barCode = new BarCode();
+            barCode.setSystem(BarCode.BarCodeSystem.CODE39_A);
+            barCode.setHRIPosition(BarCode.BarCodeHRIPosition.BelowBarCode);
+            barCode.setBarCodeSize(2, 100);
+            barCode.setJustification(EscPosConst.Justification.Center);
+
+            // Print the barcode with the order ID
+            escPos.write(barCode, orderDTO.getOrderId().toUpperCase());
 
             // Feed and cut
             escPos.feed(5);
