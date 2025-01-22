@@ -101,7 +101,7 @@ public class PrintServiceImpl implements PrintService {
             escPos.write(barCode, orderDTO.getOrderId().toUpperCase());
 
             // Feed and cut
-            escPos.feed(5);
+            escPos.feed(3);
             escPos.cut(EscPos.CutMode.FULL);
             escPos.close();
             logger.info("Invoice printed successfully");

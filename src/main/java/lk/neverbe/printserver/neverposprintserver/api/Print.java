@@ -24,6 +24,7 @@ public class Print {
             printService.printInvoice(orderDTO);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
+            logger.severe(e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -33,9 +34,10 @@ public class Print {
         try {
             logger.info("Opening cash drawer");
             printService.openDrawer();
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
+            logger.severe(e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
