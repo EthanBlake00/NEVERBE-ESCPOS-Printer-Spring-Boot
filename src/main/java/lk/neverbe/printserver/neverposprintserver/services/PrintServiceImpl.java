@@ -65,10 +65,14 @@ public class PrintServiceImpl implements PrintService {
             escPos.write(rightAlignStyle, "Total: Rs." + total + "\n");
             escPos.write(rightAlignStyle, "Discount: -Rs." + discount + "\n");
             escPos.write(rightAlignStyle.setJustification(EscPosConst.Justification.Right), "-----------------\n");
-            escPos.write(rightAlignStyle, "Subtotal: Rs." + subtotal + "\n");
-            escPos.write(rightAlignStyle, "Received: Rs." + received + "\n");
-            escPos.write(rightAlignStyle.setJustification(EscPosConst.Justification.Right), "-----------------\n");
-            escPos.write(rightAlignStyle, "Change: Rs." + change + "\n");
+            if(!orderDTO.getPaymentMethod().equalsIgnoreCase("mixed")) {
+                escPos.write(rightAlignStyle, "Subtotal: Rs." + subtotal + "\n");
+                escPos.write(rightAlignStyle, "Received: Rs." + received + "\n");
+                escPos.write(rightAlignStyle.setJustification(EscPosConst.Justification.Right), "-----------------\n");
+                escPos.write(rightAlignStyle, "Change: Rs." + change + "\n");
+            } else {
+                escPos.write(rightAlignStyle, "Total: Rs." + received + "\n");
+            }
             escPos.write(defaultStyle, "--------------------------------\n");
 
             // Footer (Center Aligned)
@@ -76,6 +80,7 @@ public class PrintServiceImpl implements PrintService {
             escPos.write(headerStyle, "Thank you for shopping!\n");
             escPos.write(headerStyle, "Visit us again.\n");
 
+            escPos.feed(1);
             // Seasonal Greetings
             LocalDate today = LocalDate.now();
             if (today.getMonthValue() == 12 && today.getDayOfMonth() != 31) {
@@ -83,7 +88,7 @@ public class PrintServiceImpl implements PrintService {
             } else if (today.getMonthValue() == 1 && today.getDayOfMonth() <= 10) {
                 escPos.write(headerStyle.setJustification(EscPosConst.Justification.Center), "Happy New Year!\n");
             } else if (today.getMonthValue() == 4) {
-                escPos.write(headerStyle.setJustification(EscPosConst.Justification.Center), "Happy Sinhala Tamil New Year!\n");
+                escPos.write(headerStyle.setJustification(EscPosConst.Justification.Center), "Happy Sinhala\nTamil New Year!\n");
             } else if (today.getMonthValue() == 2 && today.getDayOfMonth() == 14) {
                 escPos.write(headerStyle.setJustification(EscPosConst.Justification.Center), "Happy Valentine's Day!\n");
             }
