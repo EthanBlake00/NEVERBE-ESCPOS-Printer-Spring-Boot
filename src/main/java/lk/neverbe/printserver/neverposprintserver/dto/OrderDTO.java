@@ -11,6 +11,7 @@ public class OrderDTO {
     private String orderId;
     private OrderItemDTO[] items;
     private String paymentMethod;
+    private double fee;
     private String discount;
     private PaymentDTO[] paymentReceived;
     private String createdAt;

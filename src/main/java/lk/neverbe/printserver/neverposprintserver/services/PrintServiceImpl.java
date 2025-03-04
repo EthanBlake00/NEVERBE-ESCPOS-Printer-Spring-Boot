@@ -63,16 +63,13 @@ public class PrintServiceImpl implements PrintService {
             // Print totals (Right Aligned)
             escPos.write(defaultStyle, "--------------------------------\n");
             escPos.write(rightAlignStyle, "Total: Rs." + total + "\n");
+            escPos.write(rightAlignStyle, "Fee: Rs." + orderDTO.getFee() + "\n");
             escPos.write(rightAlignStyle, "Discount: -Rs." + discount + "\n");
             escPos.write(rightAlignStyle.setJustification(EscPosConst.Justification.Right), "-----------------\n");
-            if(!orderDTO.getPaymentMethod().equalsIgnoreCase("mixed")) {
-                escPos.write(rightAlignStyle, "Subtotal: Rs." + subtotal + "\n");
-                escPos.write(rightAlignStyle, "Received: Rs." + received + "\n");
-                escPos.write(rightAlignStyle.setJustification(EscPosConst.Justification.Right), "-----------------\n");
-                escPos.write(rightAlignStyle, "Change: Rs." + change + "\n");
-            } else {
-                escPos.write(rightAlignStyle, "Total: Rs." + received + "\n");
-            }
+            escPos.write(rightAlignStyle, "Subtotal: Rs." + subtotal + orderDTO.getFee() + "\n");
+            escPos.write(rightAlignStyle, "Received: Rs." + received + "\n");
+            escPos.write(rightAlignStyle.setJustification(EscPosConst.Justification.Right), "-----------------\n");
+            escPos.write(rightAlignStyle, "Change: Rs." + change + "\n");
             escPos.write(defaultStyle, "--------------------------------\n");
 
             // Footer (Center Aligned)
