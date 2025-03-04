@@ -56,9 +56,9 @@ public class PrintServiceImpl implements PrintService {
             // Calculate totals
             double total = Arrays.stream(orderDTO.getItems()).mapToDouble(item -> item.getQuantity() * item.getPrice()).sum();
             double discount = orderDTO.getDiscount() != null ? Double.parseDouble(orderDTO.getDiscount()) : 0;
-            double subtotal = total - discount;
+            double subtotal = total - discount + orderDTO.getFee();
             double received = orderDTO.getPaymentReceived() != null ? Arrays.stream(orderDTO.getPaymentReceived()).mapToDouble(PaymentDTO::getAmount).sum() : 0;
-            double change = received - subtotal;
+            double change = received - subtotal + orderDTO.getFee();
 
             // Print totals (Right Aligned)
             escPos.write(defaultStyle, "--------------------------------\n");
@@ -66,7 +66,7 @@ public class PrintServiceImpl implements PrintService {
             escPos.write(rightAlignStyle, "Fee: Rs." + orderDTO.getFee() + "\n");
             escPos.write(rightAlignStyle, "Discount: -Rs." + discount + "\n");
             escPos.write(rightAlignStyle.setJustification(EscPosConst.Justification.Right), "-----------------\n");
-            escPos.write(rightAlignStyle, "Subtotal: Rs." + subtotal + orderDTO.getFee() + "\n");
+            escPos.write(rightAlignStyle, "Subtotal: Rs." + subtotal + "\n");
             escPos.write(rightAlignStyle, "Received: Rs." + received + "\n");
             escPos.write(rightAlignStyle.setJustification(EscPosConst.Justification.Right), "-----------------\n");
             escPos.write(rightAlignStyle, "Change: Rs." + change + "\n");
