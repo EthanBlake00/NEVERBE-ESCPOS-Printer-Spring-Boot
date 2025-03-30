@@ -48,7 +48,7 @@ public class PrintServiceImpl implements PrintService {
 
             // Print each item
             for (OrderItemDTO item : orderDTO.getItems()) {
-                escPos.write(defaultStyle, item.getName() + " " + item.getVariantName() + " (" + item.getSize() + ")\n");
+                escPos.write(defaultStyle, item.getName() + " (" + item.getSize() + ")\n");
                 escPos.write(defaultStyle, "  Qty: " + item.getQuantity() + " x Rs." + item.getPrice() +
                         " = Rs." + (item.getQuantity() * item.getPrice()) + "\n");
             }
